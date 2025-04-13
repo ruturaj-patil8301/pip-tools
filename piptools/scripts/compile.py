@@ -29,152 +29,79 @@ from ..utils import (
     is_pinned_requirement,
     key_from_ireq,
 )
-from ..writer import OutputWriter
 from . import options
-from .options import BuildTargetT
 
-DEFAULT_REQUIREMENTS_FILES = (
-    "requirements.in",
-    "setup.py",
-    "pyproject.toml",
-    "setup.cfg",
-)
-DEFAULT_REQUIREMENTS_FILE = "requirements.in"
-DEFAULT_REQUIREMENTS_OUTPUT_FILE = "requirements.txt"
-METADATA_FILENAMES = frozenset({"setup.py", "setup.cfg", "pyproject.toml"})
+def show_package_dependencies(package_req: str, cache_dir: str, pip_args_str: str | None) -> None:
+    """Show direct and reverse dependencies for a specific package."""
+    log.info(f"Analyzing dependencies for {package_req}")
+    repository = PyPIRepository(
+        pip_options=get_pip_options(shlex.split(pip_args_str) if pip_args_str else []),
+        cache_dir=cache_dir,
+    )
+    
+    ireq = install_req_from_line(package_req)
+    if not is_pinned_requirement(ireq):
+        raise click.BadParameter("Package must be pinned to a specific version (e.g., package==1.0.0)")
 
+    log.info(f"\nDirect dependencies for {package_req}:")
+    try:
+        direct_deps = repository.get_dependencies(ireq)
+        if not direct_deps:
+            log.info("  No dependencies found")
+        for dep in sorted(direct_deps, key=lambda x: str(x.req)):
+            log.info(f"  {dep.req}")
+    except Exception as e:
+        log.error(f"Error getting dependencies: {e}")
 
-def _determine_linesep(
-    strategy: str = "preserve", filenames: tuple[str, ...] = ()
-) -> str:
-    """
-    Determine and return linesep string for OutputWriter to use.
-
-    Valid strategies: "LF", "CRLF", "native", "preserve"
-    When preserving, files are checked in order for existing newlines.
-    """
-    if strategy == "preserve":
-        for fname in filenames:
-            try:
-                with open(fname, "rb") as existing_file:
-                    existing_text = existing_file.read()
-            except FileNotFoundError:
-                continue
-            if b"\r\n" in existing_text:
-                strategy = "CRLF"
-                break
-            elif b"\n" in existing_text:
-                strategy = "LF"
-                break
-    return {
-        "native": os.linesep,
-        "LF": "\n",
-        "CRLF": "\r\n",
-        "preserve": "\n",
-    }[strategy]
-
-
-@click.command(
-    name="pip-compile",
-    context_settings={"help_option_names": options.help_option_names},
+@click.command()
+@click.argument("src_files", nargs=-1, type=click.Path(exists=True, dir_okay=False))
+@click.option(
+    "--show-deps",
+    help="Show dependencies for a specific package (format: package==version)",
+    type=str,
 )
 @click.pass_context
 @options.version
-@options.color
 @options.verbose
 @options.quiet
-@options.dry_run
 @options.pre
 @options.rebuild
-@options.extra
-@options.all_extras
 @options.find_links
 @options.index_url
-@options.no_index
 @options.extra_index_url
+@options.no_index
 @options.cert
 @options.client_cert
 @options.trusted_host
 @options.header
-@options.emit_trusted_host
-@options.annotate
-@options.annotation_style
-@options.upgrade
-@options.upgrade_package
-@options.output_file
-@options.newline
-@options.allow_unsafe
-@options.strip_extras
-@options.generate_hashes
-@options.reuse_hashes
-@options.max_rounds
-@options.src_files
-@options.build_isolation
-@options.emit_find_links
 @options.cache_dir
 @options.pip_args
-@options.resolver
-@options.emit_index_url
-@options.emit_options
-@options.unsafe_package
-@options.config
-@options.no_config
-@options.constraint
-@options.build_deps_for
-@options.all_build_deps
-@options.only_build_deps
 def cli(
     ctx: click.Context,
-    color: bool | None,
+    src_files: tuple[str, ...],
+    show_deps: str | None,
     verbose: int,
     quiet: int,
-    dry_run: bool,
     pre: bool,
     rebuild: bool,
-    extras: tuple[str, ...],
-    all_extras: bool,
     find_links: tuple[str, ...],
     index_url: str,
-    no_index: bool,
     extra_index_url: tuple[str, ...],
+    no_index: bool,
     cert: str | None,
     client_cert: str | None,
     trusted_host: tuple[str, ...],
     header: bool,
-    emit_trusted_host: bool,
-    annotate: bool,
-    annotation_style: str,
-    upgrade: bool,
-    upgrade_packages: tuple[str, ...],
-    output_file: LazyFile | IO[Any] | None,
-    newline: str,
-    allow_unsafe: bool,
-    strip_extras: bool | None,
-    generate_hashes: bool,
-    reuse_hashes: bool,
-    src_files: tuple[str, ...],
-    max_rounds: int,
-    build_isolation: bool,
-    emit_find_links: bool,
     cache_dir: str,
     pip_args_str: str | None,
-    resolver_name: str,
-    emit_index_url: bool,
-    emit_options: bool,
-    unsafe_package: tuple[str, ...],
-    config: Path | None,
-    no_config: bool,
-    constraint: tuple[str, ...],
-    build_deps_targets: tuple[BuildTargetT, ...],
-    all_build_deps: bool,
-    only_build_deps: bool,
 ) -> None:
-    """
-    Compile requirements.txt from source files.
+    """Compile requirements.txt from source files."""
+    log.verbosity = verbose - quiet
 
-    Valid sources are requirements.in, pyproject.toml, setup.cfg,
-    or setup.py specs.
-    """
+    if show_deps:
+        show_package_dependencies(show_deps, cache_dir, pip_args_str)
+        return
+
     if color is not None:
         ctx.color = color
     log.verbosity = verbose - quiet
@@ -546,3 +473,40 @@ def cli(
 
     if dry_run:
         log.info("Dry-run, so nothing updated.")
+
+def show_package_dependencies(package_req: str, cache_dir: str, pip_args_str: str | None) -> None:
+    """Show direct and reverse dependencies for a specific package."""
+    log.info(f"Analyzing dependencies for {package_req}")
+    repository = PyPIRepository(
+        pip_options=get_pip_options(shlex.split(pip_args_str) if pip_args_str else []),
+        cache_dir=cache_dir,
+    )
+    
+    ireq = install_req_from_line(package_req)
+    if not is_pinned_requirement(ireq):
+        raise click.BadParameter("Package must be pinned to a specific version (e.g., package==1.0.0)")
+
+    log.info(f"\nDirect dependencies for {package_req}:")
+    try:
+        direct_deps = repository.get_dependencies(ireq)
+        if not direct_deps:
+            log.info("  No dependencies found")
+        for dep in sorted(direct_deps, key=lambda x: str(x.req)):
+            log.info(f"  {dep.req}")
+    except Exception as e:
+        log.error(f"Error getting dependencies: {e}")
+
+def get_pip_repository(cache_dir: str, pip_args_str: str | None) -> PyPIRepository:
+    """Create and return a PyPIRepository instance."""
+    pip_args = shlex.split(pip_args_str) if pip_args_str else []
+    pip_options = get_pip_options(pip_args)
+    
+    session = get_session(pip_options)
+    finder = get_finder(session, pip_options)
+    
+    return PyPIRepository(
+        pip_options=pip_options,
+        session=session,
+        finder=finder,
+        cache_dir=cache_dir,
+    )

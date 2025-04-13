@@ -395,3 +395,10 @@ only_build_deps = click.option(
     default=False,
     help="Extract a package only if it is a build dependency.",
 )
+
+show_deps = click.option(
+    "--show-deps",
+    help="Show dependencies for a specific package (format: package==version)",
+    type=str,
+    default=None,
+)
