@@ -1,0 +1,44 @@
+cryptography==42.0.8
+└── cffi [required: >=1.12, installed: 1.15.0]
+    └── pycparser [required: Any, installed: 2.18]
+
+[
+    {
+        "package": {
+            "key": "cffi",
+            "package_name": "cffi",
+            "installed_version": "1.15.0"
+        },
+        "dependencies": [
+            {
+                "key": "pycparser",
+                "package_name": "pycparser",
+                "installed_version": "2.18",
+                "required_version": "Any"
+            }
+        ]
+    },
+    {
+        "package": {
+            "key": "cryptography",
+            "package_name": "cryptography",
+            "installed_version": "42.0.8"
+        },
+        "dependencies": [
+            {
+                "key": "cffi",
+                "package_name": "cffi",
+                "installed_version": "1.15.0",
+                "required_version": ">=1.12"
+            }
+        ]
+    },
+    {
+        "package": {
+            "key": "pycparser",
+            "package_name": "pycparser",
+            "installed_version": "2.18"
+        },
+        "dependencies": []
+    }
+]

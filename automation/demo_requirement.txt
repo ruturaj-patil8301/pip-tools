@@ -1,0 +1,5 @@
+Jinja2==2.10.3
+Werkzeug==0.15.5
+itsdangerous==0.24
+MarkupSafe==2.0.1
+snowflake-connector-python==3.0.3

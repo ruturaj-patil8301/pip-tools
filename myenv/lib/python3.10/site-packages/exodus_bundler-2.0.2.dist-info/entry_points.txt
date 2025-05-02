@@ -1,0 +1,3 @@
+[console_scripts]
+exodus = exodus_bundler.cli:main
+

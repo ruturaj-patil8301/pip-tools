@@ -1,0 +1,8 @@
+requirement_files:
+  - requirement_files/python3_dev_requirements.txt
+  - requirement_files/python3_dev_user_requirements.txt
+  - requirement_files/pip3_requirements.txt
+  - requirement_files/pip3_requirements.in
+
+yml_files:
+  - requirement_files/main.yml

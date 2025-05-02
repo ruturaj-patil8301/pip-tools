@@ -1,0 +1,62 @@
+- name: Copy pip3 requirements.txt
+  copy: src=pip3_requirements.txt dest=~{{ ansible_ssh_user }}/.pip/
+
+# somehow requirement parsing can't properly detect pbr, so we install
+# the package first here.
+- name: Install pbr first
+  pip:
+    executable: pip3
+    name: pbr==5.1.2
+    extra_args: >
+      --upgrade --no-deps --disable-pip-version-check --retries=0
+      --no-index --find-links=/opt/thirdparty/pip
+
+# somehow requirement parsing can't properly detect Cython, so we install
+# the package first here.
+# skip on error since we install it with pip3 as well
+- name: Install Cython first
+  pip:
+    name: Cython==0.29.36
+    extra_args: >
+      --upgrade --no-deps --disable-pip-version-check --retries=0
+      --find-links=/opt/thirdparty/pip
+  ignore_errors: yes
+
+# somehow requirement parsing can't properly detect some packages
+# so we instlal the packages first here.
+- name: Install some packages first
+  pip:
+    executable: pip3
+    name:
+      - setuptools==70.0.0
+      - pytest-runner==5.2
+      - pycparser==2.20
+      - cffi==1.15.1
+    extra_args: >
+      --upgrade --no-deps --disable-pip-version-check --retries=0
+      --no-index --ignore-installed --find-links=/opt/thirdparty/pip
+
+- name: Install pip3 requirements
+  pip:
+    executable: pip3
+    requirements: "~{{ ansible_ssh_user }}/.pip/pip3_requirements.txt"
+    extra_args: >
+      --upgrade --disable-pip-version-check --retries=0
+      --no-index --ignore-installed --find-links=/opt/thirdparty/pip
+
+- name: Install python3-cryptography with apt
+  apt:
+    name:
+      - python3-cryptography=3.4.8-1ubuntu2.2
+    state: present
+    install_recommends: no
+    force: '{{apt_force|default("no")}}'
+
+- name: Install python3-avahi with apt
+  apt:
+    name:
+      - python3-avahi=0.8-5ubuntu5.2
+      - python3-gi=3.42.1-0ubuntu1
+    state: present
+    install_recommends: no
+    force: '{{apt_force|default("no")}}'

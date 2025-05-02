@@ -1,0 +1,90 @@
+Flask==0.12.2
+├── Jinja2 [required: >=2.4, installed: 2.10.3]
+│   └── MarkupSafe [required: >=0.23, installed: 2.0.1]
+├── Werkzeug [required: >=0.7, installed: 0.15.5]
+├── click [required: >=2.0, installed: 8.1.7]
+└── itsdangerous [required: >=0.21, installed: 0.24]
+
+
+[
+    {
+        "package": {
+            "key": "click",
+            "package_name": "click",
+            "installed_version": "8.1.7"
+        },
+        "dependencies": []
+    },
+    {
+        "package": {
+            "key": "flask",
+            "package_name": "Flask",
+            "installed_version": "0.12.2"
+        },
+        "dependencies": [
+            {
+                "key": "click",
+                "package_name": "click",
+                "installed_version": "8.1.7",
+                "required_version": ">=2.0"
+            },
+            {
+                "key": "itsdangerous",
+                "package_name": "itsdangerous",
+                "installed_version": "0.24",
+                "required_version": ">=0.21"
+            },
+            {
+                "key": "jinja2",
+                "package_name": "Jinja2",
+                "installed_version": "2.10.3",
+                "required_version": ">=2.4"
+            },
+            {
+                "key": "werkzeug",
+                "package_name": "Werkzeug",
+                "installed_version": "0.15.5",
+                "required_version": ">=0.7"
+            }
+        ]
+    },
+    {
+        "package": {
+            "key": "itsdangerous",
+            "package_name": "itsdangerous",
+            "installed_version": "0.24"
+        },
+        "dependencies": []
+    },
+    {
+        "package": {
+            "key": "jinja2",
+            "package_name": "Jinja2",
+            "installed_version": "2.10.3"
+        },
+        "dependencies": [
+            {
+                "key": "markupsafe",
+                "package_name": "MarkupSafe",
+                "installed_version": "2.0.1",
+                "required_version": ">=0.23"
+            }
+        ]
+    },
+    {
+        "package": {
+            "key": "markupsafe",
+            "package_name": "MarkupSafe",
+            "installed_version": "2.0.1"
+        },
+        "dependencies": []
+    },
+    {
+        "package": {
+            "key": "werkzeug",
+            "package_name": "Werkzeug",
+            "installed_version": "0.15.5"
+        },
+        "dependencies": []
+    }
+]

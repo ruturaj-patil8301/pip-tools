@@ -1,0 +1,199 @@
+Flask==3.0.2
+├── Werkzeug [required: >=3.0.0, installed: 0.15.5]
+├── Jinja2 [required: >=3.1.2, installed: 2.10.3]
+│   └── MarkupSafe [required: >=0.23, installed: 2.0.1]
+├── itsdangerous [required: >=2.1.2, installed: 0.24]
+├── click [required: >=8.1.3, installed: 8.1.8]
+└── blinker [required: >=1.6.2, installed: ?]
+
+Werkzeug==3.0.3
+Jinja2==3.1.3
+itsdangerous==2.2.0
+
+MarkupSafe==2.1.1
+
+
+
+
+
+
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p flask
+Flask==0.12.2
+├── Jinja2 [required: >=2.4, installed: 3.1.6]
+│   └── MarkupSafe [required: >=2.0, installed: 3.0.2]
+├── Werkzeug [required: >=0.7, installed: 3.1.3]
+│   └── MarkupSafe [required: >=2.1.1, installed: 3.0.2]
+├── click [required: >=2.0, installed: 8.1.8]
+└── itsdangerous [required: >=0.21, installed: 2.2.0]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install itsdangerous==0.24
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting itsdangerous==0.24
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/dc/b4/a60bcdba945c00f6d608d8975131ab3f25b22f2bcfe1dab221165194b2d4/itsdangerous-0.24.tar.gz (46 kB)
+  Preparing metadata (setup.py) ... done
+Building wheels for collected packages: itsdangerous
+  Building wheel for itsdangerous (setup.py) ... done
+  Created wheel for itsdangerous: filename=itsdangerous-0.24-py3-none-any.whl size=10614 sha256=74988dfb77850608bb95a993b9fd73456213d314bcb5dc2a179175c5a13ceafa
+  Stored in directory: /home/ubuntu/.cache/pip/wheels/f3/b0/db/6c550d2d121ed34be19c0af2079be30093e567de24002fa18a
+Successfully built itsdangerous
+Installing collected packages: itsdangerous
+  Attempting uninstall: itsdangerous
+    Found existing installation: itsdangerous 2.2.0
+    Uninstalling itsdangerous-2.2.0:
+      Successfully uninstalled itsdangerous-2.2.0
+Successfully installed itsdangerous-0.24
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install itsdangerous==0.24 Jinja2==2.10.3 MarkupSafe==2.0.1 Werkzeug==0.15.5
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Requirement already satisfied: itsdangerous==0.24 in ./myenv/lib/python3.10/site-packages (0.24)
+Collecting Jinja2==2.10.3
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/65/e0/eb35e762802015cab1ccee04e8a277b03f1d8e53da3ec3106882ec42558b/Jinja2-2.10.3-py2.py3-none-any.whl (125 kB)
+Collecting MarkupSafe==2.0.1
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/53/e8/601efa63c4058311a8bda7984a2fe554b9da574044967d7aee253661ee46/MarkupSafe-2.0.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (30 kB)
+Collecting Werkzeug==0.15.5
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/d1/ab/d3bed6b92042622d24decc7aadc8877badf18aeca1571045840ad4956d3f/Werkzeug-0.15.5-py2.py3-none-any.whl (328 kB)
+Installing collected packages: Werkzeug, MarkupSafe, Jinja2
+  Attempting uninstall: Werkzeug
+    Found existing installation: Werkzeug 3.1.3
+    Uninstalling Werkzeug-3.1.3:
+      Successfully uninstalled Werkzeug-3.1.3
+  Attempting uninstall: MarkupSafe
+    Found existing installation: MarkupSafe 3.0.2
+    Uninstalling MarkupSafe-3.0.2:
+      Successfully uninstalled MarkupSafe-3.0.2
+  Attempting uninstall: Jinja2
+    Found existing installation: Jinja2 3.1.6
+    Uninstalling Jinja2-3.1.6:
+      Successfully uninstalled Jinja2-3.1.6
+Successfully installed Jinja2-2.10.3 MarkupSafe-2.0.1 Werkzeug-0.15.5
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p flask
+Flask==0.12.2
+├── Jinja2 [required: >=2.4, installed: 2.10.3]
+│   └── MarkupSafe [required: >=0.23, installed: 2.0.1]
+├── Werkzeug [required: >=0.7, installed: 0.15.5]
+├── click [required: >=2.0, installed: 8.1.8]
+└── itsdangerous [required: >=0.21, installed: 0.24]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install Flask==3.0.2 --no-deps
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting Flask==3.0.2
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/93/a6/aa98bfe0eb9b8b15d36cdfd03c8ca86a03968a87f27ce224fb4f766acb23/flask-3.0.2-py3-none-any.whl (101 kB)
+Installing collected packages: Flask
+  Attempting uninstall: Flask
+    Found existing installation: Flask 0.12.2
+    Uninstalling Flask-0.12.2:
+      Successfully uninstalled Flask-0.12.2
+Successfully installed Flask-3.0.2
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p flask
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - Werkzeug [required: >=3.0.0, installed: 0.15.5]
+ - Jinja2 [required: >=3.1.2, installed: 2.10.3]
+ - itsdangerous [required: >=2.1.2, installed: 0.24]
+ - blinker [required: >=1.6.2, installed: ?]
+------------------------------------------------------------------------
+Flask==3.0.2
+├── Werkzeug [required: >=3.0.0, installed: 0.15.5]
+├── Jinja2 [required: >=3.1.2, installed: 2.10.3]
+│   └── MarkupSafe [required: >=0.23, installed: 2.0.1]
+├── itsdangerous [required: >=2.1.2, installed: 0.24]
+├── click [required: >=8.1.3, installed: 8.1.8]
+└── blinker [required: >=1.6.2, installed: ?]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install Werkzeug==3.0.3 --no-deps
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting Werkzeug==3.0.3
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/9d/6e/e792999e816d19d7fcbfa94c730936750036d65656a76a5a688b57a656c4/werkzeug-3.0.3-py3-none-any.whl (227 kB)
+Installing collected packages: Werkzeug
+  Attempting uninstall: Werkzeug
+    Found existing installation: Werkzeug 0.15.5
+    Uninstalling Werkzeug-0.15.5:
+      Successfully uninstalled Werkzeug-0.15.5
+Successfully installed Werkzeug-3.0.3
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p Werkzeug
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - Jinja2 [required: >=3.1.2, installed: 2.10.3]
+ - itsdangerous [required: >=2.1.2, installed: 0.24]
+ - blinker [required: >=1.6.2, installed: ?]
+* Werkzeug==3.0.3
+ - MarkupSafe [required: >=2.1.1, installed: 2.0.1]
+------------------------------------------------------------------------
+Werkzeug==3.0.3
+└── MarkupSafe [required: >=2.1.1, installed: 2.0.1]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install Jinja2==3.1.3 --no-deps
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting Jinja2==3.1.3
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/30/6d/6de6be2d02603ab56e72997708809e8a5b0fbfee080735109b40a3564843/Jinja2-3.1.3-py3-none-any.whl (133 kB)
+Installing collected packages: Jinja2
+  Attempting uninstall: Jinja2
+    Found existing installation: Jinja2 2.10.3
+    Uninstalling Jinja2-2.10.3:
+      Successfully uninstalled Jinja2-2.10.3
+Successfully installed Jinja2-3.1.3
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install itsdangerous==2.2.0
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting itsdangerous==2.2.0
+  Using cached https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/04/96/92447566d16df59b2a776c0fb82dbc4d9e07cd95062562af01e408583fc4/itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Installing collected packages: itsdangerous
+  Attempting uninstall: itsdangerous
+    Found existing installation: itsdangerous 0.24
+    Uninstalling itsdangerous-0.24:
+      Successfully uninstalled itsdangerous-0.24
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+flask 3.0.2 requires blinker>=1.6.2, which is not installed.
+Successfully installed itsdangerous-2.2.0
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install itsdangerous==2.2.0 ^C
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p flask -reverse
+usage: pipdeptree [-h] [-v] [-w [{silence,suppress,fail}]] [--python PYTHON] [--path PATH] [-p P] [-e P] [-l | -u] [-f] [--encoding E] [-a] [-d D] [-r] [--license] [-j | --json-tree | --mermaid | --graph-output FMT]
+pipdeptree: error: cannot use --exclude with --packages or --all
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p flask --reverse
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - blinker [required: >=1.6.2, installed: ?]
+* Werkzeug==3.0.3
+ - MarkupSafe [required: >=2.1.1, installed: 2.0.1]
+------------------------------------------------------------------------
+Flask==3.0.2
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p Werkzeug
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - blinker [required: >=1.6.2, installed: ?]
+* Werkzeug==3.0.3
+ - MarkupSafe [required: >=2.1.1, installed: 2.0.1]
+------------------------------------------------------------------------
+Werkzeug==3.0.3
+└── MarkupSafe [required: >=2.1.1, installed: 2.0.1]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install MarkupSafe==2.1.1
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Collecting MarkupSafe==2.1.1
+  Downloading https://repository.rubrik.com/artifactory/api/pypi/pypi/packages/packages/9e/82/2e089c6f34e77c073aa5a67040d368aac0dfb9b8ccbb46d381452c26fc33/MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (25 kB)
+Installing collected packages: MarkupSafe
+  Attempting uninstall: MarkupSafe
+    Found existing installation: MarkupSafe 2.0.1
+    Uninstalling MarkupSafe-2.0.1:
+      Successfully uninstalled MarkupSafe-2.0.1
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+flask 3.0.2 requires blinker>=1.6.2, which is not installed.
+Successfully installed MarkupSafe-2.1.1
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pip3 install MarkupSafe==2.1.1 --no-deps
+Looking in indexes: https://repository.rubrik.com/artifactory/api/pypi/pypi/simple
+Requirement already satisfied: MarkupSafe==2.1.1 in ./myenv/lib/python3.10/site-packages (2.1.1)
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p Werkzeug --reverse
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - blinker [required: >=1.6.2, installed: ?]
+------------------------------------------------------------------------
+Werkzeug==3.0.3
+└── Flask==3.0.2 [requires: Werkzeug>=3.0.0]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p Jinja2
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - blinker [required: >=1.6.2, installed: ?]
+------------------------------------------------------------------------
+Jinja2==3.1.3
+└── MarkupSafe [required: >=2.0, installed: 2.1.1]
+(myenv) ubuntu@vm-machine-6jmnme-a7oxeay:~/pip-tools$ pipdeptree -p Jinja2 --reverse
+Warning!!! Possibly conflicting dependencies found:
+* Flask==3.0.2
+ - blinker [required: >=1.6.2, installed: ?]
+------------------------------------------------------------------------
+Jinja2==3.1.3
+├── ansible==2.8.6 [requires: Jinja2]
+└── Flask==3.0.2 [requires: Jinja2>=3.1.2]
