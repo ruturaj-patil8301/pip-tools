@@ -2,6 +2,7 @@ import subprocess
 import sys
 import logging
 import ast
+import json
 from packaging.version import Version, InvalidVersion
 
 logging.basicConfig(
@@ -152,6 +153,8 @@ def main(initial_packages):
     for pkg, versions in upgrade_history.items():
         print(f"{pkg}: {versions['previous_version']} → {versions['upgraded_version']}")
         logging.info(f"{pkg}: {versions['previous_version']} → {versions['upgraded_version']}")
+    
+    return upgrade_history
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -166,7 +169,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        main(packages)
+        result = main(packages)
+        # Write the upgrade history to a temporary file for wrapper.py to read
+        with open('upgrade_history.json', 'w') as f:
+            json.dump(result, f)
     except Exception as e:
         logging.error(f"Unexpected error: {e}", exc_info=True)
         print(f"An unexpected error occurred: {e}\nPlease check 'resolve_dependencies.log' for details.")

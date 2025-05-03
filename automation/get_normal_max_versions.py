@@ -83,23 +83,34 @@ def get_max_version_across_files(files, package_name):
         return [None, None]
 
 def update_package_version_in_file(file, package_name, new_version):
-    packages = read_requirements(file)
     package_name_lower = package_name.lower()
     updated = False
 
-    # Update the package explicitly in a case-insensitive manner
-    for existing_pkg in packages:
-        if existing_pkg.lower() == package_name_lower:
-            packages[existing_pkg] = new_version
-            updated = True
-            break
+    try:
+        with open(file, 'r') as fp:
+            lines = fp.readlines()
 
-    if updated:
-        write_requirements(file, packages)
-        logging.info(f"Successfully updated {package_name} to version {new_version} explicitly in {file}")
-        return True
-    else:
-        logging.warning(f"{package_name} not found explicitly in {file}; no update made.")
+        with open(file, 'w') as fp:
+            for line in lines:
+                line_stripped = line.strip()
+                if line_stripped and not line_stripped.startswith('#') and '==' in line_stripped:
+                    pkg, ver = line_stripped.split('==', 1)
+                    if pkg.strip().lower() == package_name_lower:
+                        line = f"{pkg.strip()}=={new_version}\n"
+                        updated = True
+                        logging.info(f"Updating {package_name} from {ver.strip()} to {new_version} explicitly in {file}")
+
+                fp.write(line)
+
+        if updated:
+            logging.info(f"Successfully updated {package_name} to version {new_version} explicitly in {file}")
+            return True
+        else:
+            logging.warning(f"{package_name} not found explicitly in {file}; no update made.")
+            return False
+
+    except Exception as e:
+        logging.error(f"Error while updating requirements file '{file}': {e}")
         return False
 
 if __name__ == "__main__":

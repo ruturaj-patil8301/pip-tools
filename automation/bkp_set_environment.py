@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import subprocess
 import sys
 import os
@@ -65,9 +66,7 @@ def main(requirement_file, yml_file):
     try:
         create_virtualenv(virtual_env_name)
     except Exception:
-        error_msg = "Error creating virtual environment. See resolve_dependencies.log for details."
-        print(error_msg)
-        logging.error(error_msg)  # Explicitly logging
+        print("Error creating virtual environment. See resolve_dependencies.log for details.")
         sys.exit(1)
 
     # Step 1 (THE FIX): Install required packages explicitly WITHIN the virtual environment
@@ -79,9 +78,7 @@ def main(requirement_file, yml_file):
             "Installing required python packages into virtual environment"
         )
     except Exception:
-        error_msg = "Error installing base required pip packages in virtualenv. Check resolve_dependencies.log"
-        print(error_msg)
-        logging.error(error_msg)  # Explicitly logging
+        print("Error installing base required pip packages in virtualenv. Check resolve_dependencies.log")
         sys.exit(1)
 
     # Step 2(a): Now safely run extract_install_pip_apt_from_yml.py
@@ -92,9 +89,7 @@ def main(requirement_file, yml_file):
             "YML Pip & Apt package extraction and installation"
         )
     except Exception:
-        error_msg = "Error during extraction and installation from yml. Check resolve_dependencies.log"
-        print(error_msg)
-        logging.error(error_msg)  # Explicitly logging
+        print("Error during extraction and installation from yml. Check resolve_dependencies.log")
         sys.exit(1)
 
     # Step 2(b): Finally, run install_packages_from_requirement_files.sh
@@ -105,22 +100,16 @@ def main(requirement_file, yml_file):
             "Requirements TXT package installation"
         )
     except Exception:
-        error_msg = "Error during requirement packages installation. Check resolve_dependencies.log"
-        print(error_msg)
-        logging.error(error_msg)  # Explicitly logging
+        print("Error during requirement packages installation. Check resolve_dependencies.log")
         sys.exit(1)
 
     logging.info("--- Environment setup completed successfully ---")
-    success_msg = "Setup Finished Successfully!"
-    print("\n" + success_msg)
-    logging.info(success_msg)  # Explicitly logging success message
+    print("\nSetup Finished Successfully!")
 
 if __name__ == "__main__":
-    # Explicitly handling and logging the missing arguments scenario
     if len(sys.argv) != 3:
-        usage_msg = f"\nUsage: python3 {sys.argv[0]} <requirement_file> <yml_file>\n"
-        print(usage_msg)
-        logging.error("Invalid usage: Insufficient arguments provided.")  # Explicitly logging
+        print(f"\nUsage: python3 {sys.argv[0]} <requirement_file> <yml_file>\n")
+        logging.error("Invalid usage. Insufficient arguments.")
         sys.exit(1)
 
     requirement_file, yml_file = sys.argv[1], sys.argv[2]
@@ -135,7 +124,6 @@ if __name__ == "__main__":
     try:
         main(requirement_file, yml_file)
     except Exception as e:
-        critical_msg = f"Unexpected critical failure: {traceback.format_exc()}"
-        logging.critical(critical_msg)
+        logging.critical(f"Unexpected critical failure: {traceback.format_exc()}")
         print(f"Unexpected error: {str(e)} Refer 'resolve_dependencies.log' for details.")
         sys.exit(1)

@@ -68,7 +68,7 @@ def get_max_requirement_version(package_name):
     return None, None
 
 def main(package_name):
-    logging.info(f"[demo_8.py] Resolving explicitly dependencies for '{package_name}'")
+    logging.info(f"[dependency_resolver_final.py] Resolving explicitly dependencies for '{package_name}'")
 
     data = run_pipdeptree(package_name)
     package_info = get_package_info(data, package_name)
@@ -138,7 +138,7 @@ def main(package_name):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        logging.error("Incorrect usage clearly: python3 demo_8.py <package_name> explicitly required.")
+        logging.error("Incorrect usage clearly: python3 dependency_resolver_final.py <package_name> explicitly required.")
         print("[]")
         sys.exit(1)
 
