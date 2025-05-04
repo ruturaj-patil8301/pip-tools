@@ -1,10 +1,9 @@
-import subprocess
-import json
 import os
 import sys
-import yaml
+import subprocess
 import logging
-import traceback
+import json
+import yaml
 from packaging.version import Version
 
 # Configure logging 
@@ -278,30 +277,168 @@ try:
         # If any packages were updated, compile the file
         if updated_packages:
             logging.info(f"Compiling updated requirement file: {req_file}")
-            compiled_file = f"compiled_{os.path.basename(req_file)}"
+            
+            # Check if this is an .in file
+            is_in_file = req_file.endswith('.in')
             
             try:
-                compile_result = subprocess.run(
-                    ['python3', '-m', 'piptools', 'compile', req_file, f'--output-file={compiled_file}'],
-                    capture_output=True, text=True
-                )
-                
-                if compile_result.returncode == 0 and os.path.exists(compiled_file):
-                    logging.info(f"Successfully compiled {req_file} to {compiled_file}")
+                if is_in_file:
+                    # For .in files, use --allow-unsafe and let pip-tools create the output file automatically
+                    logging.info(f"Compiling .in file with --allow-unsafe")
                     
-                    # Print summary of updates for this file
-                    print(f"\n{req_file}")
-                    for pkg in updated_packages:
-                        print(f"{pkg['name']} ({pkg['previous_version']} → {pkg['upgraded_version']})")
+                    # The output will automatically be named as the .in file but with .txt extension
+                    compile_cmd = ['python3', '-m', 'piptools', 'compile', req_file, '--allow-unsafe']
+                    compile_result = subprocess.run(
+                        compile_cmd,
+                        shell=False,
+                        text=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.DEVNULL
+                    )
+                    
+                    # Check if the compiled file was created (replace .in with .txt)
+                    expected_output = req_file[:-3] + '.txt'
+                    if os.path.exists(expected_output):
+                        logging.info(f"Successfully compiled {req_file} to {expected_output} (keeping file)")
+                        # Print summary of updates for this file
+                        print(f"\n{req_file} → {expected_output}")
+                        for pkg in updated_packages:
+                            print(f"{pkg['name']} ({pkg['previous_version']} → {pkg['upgraded_version']})")
+                    else:
+                        logging.error(f"Failed to compile {req_file}")
+                        print(f"Failed to compile {req_file}. See log for details.")
                 else:
-                    logging.error(f"Failed to compile {req_file}: {compile_result.stderr}")
-                    print(f"Failed to compile {req_file}. See log for details.")
+                    # For non-.in files, use the original approach and delete the compiled file after
+                    compiled_file = f"compiled_{os.path.basename(req_file)}"
+                    
+                    compile_cmd = ['python3', '-m', 'piptools', 'compile', req_file, f'--output-file={compiled_file}']
+                    compile_result = subprocess.run(
+                        compile_cmd,
+                        shell=False,
+                        text=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.DEVNULL
+                    )
+                    
+                    if os.path.exists(compiled_file):
+                        logging.info(f"Successfully compiled {req_file} to {compiled_file}")
+                        
+                        # Print summary of updates for this file
+                        print(f"\n{req_file}")
+                        for pkg in updated_packages:
+                            print(f"{pkg['name']} ({pkg['previous_version']} → {pkg['upgraded_version']})")
+                        
+                        # Delete the compiled file after processing
+                        try:
+                            os.remove(compiled_file)
+                            logging.info(f"Deleted compiled file: {compiled_file}")
+                        except Exception as e:
+                            logging.warning(f"Failed to delete compiled file {compiled_file}: {e}")
+                    else:
+                        logging.error(f"Failed to compile {req_file}")
+                        print(f"Failed to compile {req_file}. See log for details.")
             except Exception as e:
                 logging.error(f"Error compiling {req_file}: {e}")
                 print(f"Error compiling {req_file}: {e}")
         else:
             logging.info(f"No packages to update in {req_file}")
             print(f"No packages to update in {req_file}")
+
+    # Update packages in YAML files
+    if config and 'yml_files' in config:
+        print("\n--- Updating packages in YAML files ---")
+        logging.info("Starting to update packages in YAML files")
+        
+        for yml_file in config['yml_files']:
+            if not os.path.isfile(yml_file):
+                logging.warning(f"YAML file not found: {yml_file}")
+                print(f"Warning: YAML file not found: {yml_file}")
+                continue
+                
+            logging.info(f"Processing YAML file: {yml_file}")
+            print(f"\nProcessing YAML file: {yml_file}")
+            
+            # Track which packages were updated in this file
+            updated_packages = []
+            unchanged_packages = []
+            not_found_packages = []
+            
+            # Update each package from upgrade_history in this YAML file
+            for pkg_name, versions in upgrade_history.items():
+                # Skip packages that weren't actually upgraded
+                if versions['previous_version'] == versions['upgraded_version']:
+                    continue
+                    
+                # Run extract_install_pip_apt_from_yml.py to update the package version
+                try:
+                    logging.info(f"Attempting to update {pkg_name} to {versions['upgraded_version']} in {yml_file}")
+                    result = subprocess.run(
+                        ['python3', 'extract_install_pip_apt_from_yml.py', 'set', pkg_name, versions['upgraded_version'], yml_file],
+                        capture_output=True, text=True
+                    )
+                    
+                    # Parse the JSON result if available
+                    result_data = None
+                    for line in result.stdout.splitlines():
+                        if line.startswith("RESULT: "):
+                            try:
+                                result_data = json.loads(line[8:])  # Skip "RESULT: " prefix
+                                break
+                            except json.JSONDecodeError:
+                                pass
+                    
+                    if result_data:
+                        if result_data["status"] == "updated":
+                            updated_packages.append({
+                                'name': pkg_name,
+                                'previous_version': result_data.get("old_version", versions['previous_version']),
+                                'upgraded_version': versions['upgraded_version']
+                            })
+                            logging.info(f"Successfully updated {pkg_name} in {yml_file}")
+                        elif result_data["status"] == "unchanged":
+                            unchanged_packages.append(pkg_name)
+                            logging.info(f"{pkg_name} already at desired version in {yml_file}")
+                        elif result_data["status"] == "not_found":
+                            not_found_packages.append(pkg_name)
+                            logging.info(f"{pkg_name} not found in {yml_file}")
+                        else:
+                            logging.error(f"Error updating {pkg_name} in {yml_file}: {result_data['message']}")
+                    else:
+                        # Fallback to the old string parsing if JSON result not found
+                        if "Updated" in result.stdout:
+                            updated_packages.append({
+                                'name': pkg_name,
+                                'previous_version': versions['previous_version'],
+                                'upgraded_version': versions['upgraded_version']
+                            })
+                            logging.info(f"Successfully updated {pkg_name} in {yml_file}")
+                        elif "already at desired version" in result.stdout:
+                            unchanged_packages.append(pkg_name)
+                            logging.info(f"{pkg_name} already at desired version in {yml_file}")
+                        elif "not found" in result.stdout:
+                            not_found_packages.append(pkg_name)
+                            logging.info(f"{pkg_name} not found in {yml_file}")
+                        else:
+                            logging.warning(f"Unexpected output for {pkg_name} in {yml_file}: {result.stdout}")
+                except Exception as e:
+                    logging.error(f"Error updating {pkg_name} in {yml_file}: {e}")
+            
+            # Print summary of updates for this file
+            print(f"\nSummary for {yml_file}:")
+            if updated_packages:
+                print("  Updated packages:")
+                for pkg in updated_packages:
+                    print(f"    {pkg['name']} ({pkg['previous_version']} → {pkg['upgraded_version']})")
+            if unchanged_packages:
+                print("  Already at desired version:")
+                for pkg in unchanged_packages:
+                    print(f"    {pkg}")
+            if not_found_packages:
+                print("  Not found in file:")
+                for pkg in not_found_packages:
+                    print(f"    {pkg}")
+            if not (updated_packages or unchanged_packages or not_found_packages):
+                print("  No packages processed")
 
     # Verify the installation in the virtual environment
     logging.info("Verifying installed package versions")

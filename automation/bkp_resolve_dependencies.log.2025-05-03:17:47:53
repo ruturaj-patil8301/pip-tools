@@ -1,0 +1,345 @@
+2025-05-03 16:28:57 - INFO - Packages provided: cryptography==42.0.8 Flask==3.0.2
+2025-05-03 16:28:57,262 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:28:57,263 - INFO - Reading requirements from: requirement_files/python3_dev_requirements.txt
+2025-05-03 16:28:57,263 - INFO - Reading requirements from: requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:28:57,264 - INFO - Reading requirements from: requirement_files/pip3_requirements.txt
+2025-05-03 16:28:57,264 - INFO - Reading requirements from: requirement_files/pip3_requirements.in
+2025-05-03 16:28:57,264 - INFO - Max version of cryptography across files: 3.4.8 found in requirement_files/python3_dev_requirements.txt
+2025-05-03 16:28:57 - ERROR - Exception running get_normal_max_versions.py for cryptography: Invalid version: '42.0.8 Flask'
+2025-05-03 16:28:57 - INFO - Updated package specs after checking max versions: cryptography==42.0.8 Flask==3.0.2
+2025-05-03 16:28:57 - INFO - Starting environment setup process
+2025-05-03 16:28:57 - INFO - Loading configuration from files_config.yml
+2025-05-03 16:28:57 - INFO - Requirement files found: ['requirement_files/python3_dev_requirements.txt', 'requirement_files/python3_dev_user_requirements.txt', 'requirement_files/pip3_requirements.txt', 'requirement_files/pip3_requirements.in']
+2025-05-03 16:28:57 - INFO - Running set_environment.py with requirement_files/python3_dev_requirements.txt and requirement_files/main.yml
+2025-05-03 16:28:57 - INFO - --- Starting environment setup ---
+2025-05-03 16:28:57 - INFO - Checking if 'python3-venv' is installed...
+2025-05-03 16:28:57 - INFO - python3-venv not found. Installing now.
+2025-05-03 16:29:02 - INFO - Virtual environment 'demo_myenv' created successfully.
+2025-05-03 16:29:02 - INFO - Starting step: Installing required python packages into virtual environment
+2025-05-03 16:29:04 - INFO - Completed successfully: Installing required python packages into virtual environment
+2025-05-03 16:29:04 - INFO - Starting step: YML Pip & Apt package extraction and installation
+2025-05-03 16:29:14 - INFO - Completed successfully: YML Pip & Apt package extraction and installation
+2025-05-03 16:29:14 - INFO - Starting step: Requirements TXT package installation
+2025-05-03 16:39:07 - INFO - Completed successfully: Requirements TXT package installation
+2025-05-03 16:39:07 - INFO - --- Environment setup completed successfully ---
+2025-05-03 16:39:07 - INFO - Setup Finished Successfully!
+2025-05-03 16:39:07 - INFO - Installing specific package versions in virtual environment: cryptography==42.0.8 Flask==3.0.2
+2025-05-03 16:39:07 - INFO - Running command in virtual environment: pip3 install --no-deps cryptography==42.0.8 Flask==3.0.2
+2025-05-03 16:39:09 - INFO - Analyzing dependencies for: cryptography
+2025-05-03 16:39:09 - INFO - Running command in virtual environment: python3 update_dependency_rev_dependency.py cryptography
+2025-05-03 16:39:09 - INFO - === Starting dependency resolution loop ===
+2025-05-03 16:39:09 - INFO - --- Iteration 1 ---
+2025-05-03 16:39:09 - INFO - Analyzing direct dependencies for package: cryptography
+2025-05-03 16:39:09 - INFO - [dependency_resolver_final.py] Resolving explicitly dependencies for 'cryptography'
+2025-05-03 16:39:10 - INFO - Explicit dependency issues resolved for 'cryptography': []
+2025-05-03 16:39:10 - INFO - Analyzing reverse dependencies for package: cryptography
+2025-05-03 16:39:15 - INFO - Reverse dependency issue identified: snowflake-connector-python==3.0.3 requires 'cryptographycryptography>=3.1.0,<41.0.0' but 42.0.8 is installed.
+2025-05-03 16:39:15 - INFO - Reverse dependency issues identified for 'cryptography': ['snowflake-connector-python']
+2025-05-03 16:39:18 - INFO - Checking available versions for 'snowflake-connector-python' greater than '3.0.3'
+2025-05-03 16:39:19 - INFO - Trail version for 'snowflake-connector-python' after '3.0.3': 3.9.0
+2025-05-03 16:39:19 - INFO - Packages to upgrade in iteration 1: {'snowflake-connector-python==3.9.0'}
+2025-05-03 16:39:23 - INFO - Installed: snowflake-connector-python==3.9.0
+2025-05-03 16:39:25 - INFO - snowflake-connector-python: 3.0.3 → 3.9.0
+2025-05-03 16:39:25 - INFO - --- Iteration 2 ---
+2025-05-03 16:39:25 - INFO - Analyzing direct dependencies for package: snowflake-connector-python
+2025-05-03 16:39:26 - INFO - [dependency_resolver_final.py] Resolving explicitly dependencies for 'snowflake-connector-python'
+2025-05-03 16:39:27 - WARNING - Dependency 'sortedcontainers' has no installed version. Skipping.
+2025-05-03 16:39:27 - WARNING - Dependency 'tomlkit' has no installed version. Skipping.
+2025-05-03 16:39:27 - INFO - Explicit dependency issues resolved for 'snowflake-connector-python': []
+2025-05-03 16:39:27 - INFO - Analyzing reverse dependencies for package: snowflake-connector-python
+2025-05-03 16:39:31 - INFO - Reverse dependency issues identified for 'snowflake-connector-python': []
+2025-05-03 16:39:31 - INFO - Packages to upgrade in iteration 2: set()
+2025-05-03 16:39:31 - INFO - No more packages to upgrade. Ending resolution loop.
+2025-05-03 16:39:31 - INFO - === Dependency resolution loop completed ===
+
+2025-05-03 16:39:31 - INFO - snowflake-connector-python: 3.0.3 → 3.9.0
+2025-05-03 16:39:31 - INFO - Dependency upgrade history loaded successfully
+2025-05-03 16:39:31 - INFO - snowflake-connector-python: 3.0.3 → 3.9.0
+2025-05-03 16:39:31 - INFO - Added input package to history: cryptography: Direct installation → 42.0.8 Flask
+2025-05-03 16:39:31 - INFO - Starting to update requirement files with upgraded packages
+2025-05-03 16:39:31 - INFO - Processing requirement file: requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31,358 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:39:31,367 - INFO - Reading requirements from: requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31,372 - INFO - Found snowflake-connector-python version in requirement_files/python3_dev_requirements.txt: 3.0.3
+2025-05-03 16:39:31 - INFO - Found snowflake-connector-python in requirement_files/python3_dev_requirements.txt with version 3.0.3
+2025-05-03 16:39:31 - INFO - Updating snowflake-connector-python in requirement_files/python3_dev_requirements.txt from 3.0.3 to 3.9.0
+2025-05-03 16:39:31,473 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:39:31,486 - INFO - Updating snowflake-connector-python from 3.0.3 to 3.9.0 explicitly in requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31,486 - INFO - Successfully updated snowflake-connector-python to version 3.9.0 explicitly in requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31 - INFO - Successfully updated snowflake-connector-python in requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31,573 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:39:31,586 - INFO - Reading requirements from: requirement_files/python3_dev_requirements.txt
+2025-05-03 16:39:31,587 - INFO - Found cryptography version in requirement_files/python3_dev_requirements.txt: 3.4.8
+2025-05-03 16:39:31 - INFO - Found cryptography in requirement_files/python3_dev_requirements.txt with version 3.4.8
+2025-05-03 16:39:31 - ERROR - Error checking/updating cryptography in requirement_files/python3_dev_requirements.txt: Invalid version: '42.0.8 Flask'
+2025-05-03 16:39:31 - INFO - Compiling updated requirement file: requirement_files/python3_dev_requirements.txt
+2025-05-03 16:40:34 - ERROR - Failed to compile requirement_files/python3_dev_requirements.txt:     error: subprocess-exited-with-error
+    
+    × python setup.py egg_info did not run successfully.
+    │ exit code: 1
+    ╰─> [32 lines of output]
+        running egg_info
+        creating /tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info
+        writing /tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/PKG-INFO
+        writing dependency_links to /tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/dependency_links.txt
+        writing requirements to /tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/requires.txt
+        writing top-level names to /tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/top_level.txt
+        writing manifest file '/tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/SOURCES.txt'
+        reading manifest file '/tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/SOURCES.txt'
+        reading manifest template 'MANIFEST.in'
+        warning: no previously-included files matching '*' found under directory '.ci'
+        warning: no previously-included files matching '*' found under directory 'build'
+        warning: no previously-included files matching '*' found under directory 'docs/_build'
+        warning: no files found matching 'README*' under directory 'demo'
+        warning: no files found matching '*.rst' under directory 'pyftpdlib'
+        warning: manifest_maker: MANIFEST.in, line 19: 'recursive-include' expects <dir> <pattern1> <pattern2> ...
+        
+        adding license file 'LICENSE'
+        writing manifest file '/tmp/pip-pip-egg-info-2q463w8b/pyftpdlib.egg-info/SOURCES.txt'
+        Traceback (most recent call last):
+          File "<string>", line 2, in <module>
+          File "<pip-setuptools-caller>", line 34, in <module>
+          File "/tmp/pip-resolve-uvi5s96c/pyftpdlib_17443d6296774bf1b8ea09e5763398c6/setup.py", line 153, in <module>
+            main()
+          File "/tmp/pip-resolve-uvi5s96c/pyftpdlib_17443d6296774bf1b8ea09e5763398c6/setup.py", line 143, in main
+            from OpenSSL import SSL  # NOQA
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/__init__.py", line 8, in <module>
+            from OpenSSL import crypto, SSL
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/crypto.py", line 1579, in <module>
+            class X509StoreFlags(object):
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/crypto.py", line 1598, in X509StoreFlags
+            NOTIFY_POLICY = _lib.X509_V_FLAG_NOTIFY_POLICY
+        AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?
+        [end of output]
+    
+    note: This error originates from a subprocess, and is likely not a problem with pip.
+Traceback (most recent call last):
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/build/metadata_legacy.py", line 64, in generate_metadata
+    call_subprocess(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/utils/subprocess.py", line 224, in call_subprocess
+    raise error
+pip._internal.exceptions.InstallationSubprocessError: python setup.py egg_info exited with 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/__main__.py", line 19, in <module>
+    cli()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/decorators.py", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/scripts/compile.py", line 470, in cli
+    results = resolver.resolve(max_rounds=max_rounds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/resolver.py", line 604, in resolve
+    is_resolved = self._do_resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/resolver.py", line 636, in _do_resolve
+    resolver.resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 95, in resolve
+    result = self._result = resolver.resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 546, in resolve
+    state = resolution.resolve(requirements, max_rounds=max_rounds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 397, in resolve
+    self._add_to_criteria(self.state.criteria, r, parent=None)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 173, in _add_to_criteria
+    if not criterion.candidates:
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/structs.py", line 156, in __bool__
+    return bool(self._sequence)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 155, in __bool__
+    return any(self)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 143, in <genexpr>
+    return (c for c in iterator if id(c) not in self._incompatible_ids)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 47, in _iter_built
+    candidate = func()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/factory.py", line 182, in _make_candidate_from_link
+    base: Optional[BaseCandidate] = self._make_base_candidate_from_link(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/factory.py", line 228, in _make_base_candidate_from_link
+    self._link_candidate_cache[link] = LinkCandidate(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 290, in __init__
+    super().__init__(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 156, in __init__
+    self.dist = self._prepare()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 222, in _prepare
+    dist = self._prepare_distribution()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 301, in _prepare_distribution
+    return preparer.prepare_linked_requirement(self._ireq, parallel_builds=True)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 525, in prepare_linked_requirement
+    return self._prepare_linked_requirement(req, parallel_builds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 640, in _prepare_linked_requirement
+    dist = _get_prepared_distribution(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 71, in _get_prepared_distribution
+    abstract_dist.prepare_distribution_metadata(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/distributions/sdist.py", line 67, in prepare_distribution_metadata
+    self.req.prepare_metadata()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/req/req_install.py", line 585, in prepare_metadata
+    self.metadata_directory = generate_metadata_legacy(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/build/metadata_legacy.py", line 71, in generate_metadata
+    raise MetadataGenerationFailed(package_details=details) from error
+pip._internal.exceptions.MetadataGenerationFailed: metadata generation failed
+
+2025-05-03 16:40:34 - INFO - Processing requirement file: requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:34,958 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:34,959 - INFO - Reading requirements from: requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:34,959 - WARNING - snowflake-connector-python not found in requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:35,017 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,018 - INFO - Reading requirements from: requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:35,018 - WARNING - cryptography not found in requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:35 - INFO - No packages to update in requirement_files/python3_dev_user_requirements.txt
+2025-05-03 16:40:35 - INFO - Processing requirement file: requirement_files/pip3_requirements.txt
+2025-05-03 16:40:35,106 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,107 - INFO - Reading requirements from: requirement_files/pip3_requirements.txt
+2025-05-03 16:40:35,112 - WARNING - snowflake-connector-python not found in requirement_files/pip3_requirements.txt
+2025-05-03 16:40:35,193 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,199 - INFO - Reading requirements from: requirement_files/pip3_requirements.txt
+2025-05-03 16:40:35,199 - INFO - Found cryptography version in requirement_files/pip3_requirements.txt: 3.3
+2025-05-03 16:40:35 - INFO - Found cryptography in requirement_files/pip3_requirements.txt with version 3.3
+2025-05-03 16:40:35 - ERROR - Error checking/updating cryptography in requirement_files/pip3_requirements.txt: Invalid version: '42.0.8 Flask'
+2025-05-03 16:40:35 - INFO - No packages to update in requirement_files/pip3_requirements.txt
+2025-05-03 16:40:35 - INFO - Processing requirement file: requirement_files/pip3_requirements.in
+2025-05-03 16:40:35,293 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,299 - INFO - Reading requirements from: requirement_files/pip3_requirements.in
+2025-05-03 16:40:35,302 - INFO - Found snowflake-connector-python version in requirement_files/pip3_requirements.in: 3.7.0
+2025-05-03 16:40:35 - INFO - Found snowflake-connector-python in requirement_files/pip3_requirements.in with version 3.7.0
+2025-05-03 16:40:35 - INFO - Updating snowflake-connector-python in requirement_files/pip3_requirements.in from 3.7.0 to 3.9.0
+2025-05-03 16:40:35,367 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,373 - INFO - Updating snowflake-connector-python from 3.7.0 to 3.9.0 explicitly in requirement_files/pip3_requirements.in
+2025-05-03 16:40:35,373 - INFO - Successfully updated snowflake-connector-python to version 3.9.0 explicitly in requirement_files/pip3_requirements.in
+2025-05-03 16:40:35 - INFO - Successfully updated snowflake-connector-python in requirement_files/pip3_requirements.in
+2025-05-03 16:40:35,445 - INFO - Loading configuration explicitly from: files_config.yml
+2025-05-03 16:40:35,446 - INFO - Reading requirements from: requirement_files/pip3_requirements.in
+2025-05-03 16:40:35,446 - INFO - Found cryptography version in requirement_files/pip3_requirements.in: 3.3
+2025-05-03 16:40:35 - INFO - Found cryptography in requirement_files/pip3_requirements.in with version 3.3
+2025-05-03 16:40:35 - ERROR - Error checking/updating cryptography in requirement_files/pip3_requirements.in: Invalid version: '42.0.8 Flask'
+2025-05-03 16:40:35 - INFO - Compiling updated requirement file: requirement_files/pip3_requirements.in
+2025-05-03 16:41:13 - ERROR - Failed to compile requirement_files/pip3_requirements.in:     error: subprocess-exited-with-error
+    
+    × python setup.py egg_info did not run successfully.
+    │ exit code: 1
+    ╰─> [32 lines of output]
+        running egg_info
+        creating /tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info
+        writing /tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/PKG-INFO
+        writing dependency_links to /tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/dependency_links.txt
+        writing requirements to /tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/requires.txt
+        writing top-level names to /tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/top_level.txt
+        writing manifest file '/tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/SOURCES.txt'
+        reading manifest file '/tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/SOURCES.txt'
+        reading manifest template 'MANIFEST.in'
+        warning: no previously-included files matching '*' found under directory '.ci'
+        warning: no previously-included files matching '*' found under directory 'build'
+        warning: no previously-included files matching '*' found under directory 'docs/_build'
+        warning: no files found matching 'README*' under directory 'demo'
+        warning: no files found matching '*.rst' under directory 'pyftpdlib'
+        warning: manifest_maker: MANIFEST.in, line 19: 'recursive-include' expects <dir> <pattern1> <pattern2> ...
+        
+        adding license file 'LICENSE'
+        writing manifest file '/tmp/pip-pip-egg-info-qu7tt5fb/pyftpdlib.egg-info/SOURCES.txt'
+        Traceback (most recent call last):
+          File "<string>", line 2, in <module>
+          File "<pip-setuptools-caller>", line 34, in <module>
+          File "/tmp/pip-resolve-7veu_vvv/pyftpdlib_a480251542dd4278a227ece3de7589d8/setup.py", line 153, in <module>
+            main()
+          File "/tmp/pip-resolve-7veu_vvv/pyftpdlib_a480251542dd4278a227ece3de7589d8/setup.py", line 143, in main
+            from OpenSSL import SSL  # NOQA
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/__init__.py", line 8, in <module>
+            from OpenSSL import crypto, SSL
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/crypto.py", line 1579, in <module>
+            class X509StoreFlags(object):
+          File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/OpenSSL/crypto.py", line 1598, in X509StoreFlags
+            NOTIFY_POLICY = _lib.X509_V_FLAG_NOTIFY_POLICY
+        AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?
+        [end of output]
+    
+    note: This error originates from a subprocess, and is likely not a problem with pip.
+Traceback (most recent call last):
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/build/metadata_legacy.py", line 64, in generate_metadata
+    call_subprocess(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/utils/subprocess.py", line 224, in call_subprocess
+    raise error
+pip._internal.exceptions.InstallationSubprocessError: python setup.py egg_info exited with 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/__main__.py", line 19, in <module>
+    cli()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/click/decorators.py", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/scripts/compile.py", line 470, in cli
+    results = resolver.resolve(max_rounds=max_rounds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/resolver.py", line 604, in resolve
+    is_resolved = self._do_resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/piptools/resolver.py", line 636, in _do_resolve
+    resolver.resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 95, in resolve
+    result = self._result = resolver.resolve(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 546, in resolve
+    state = resolution.resolve(requirements, max_rounds=max_rounds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 397, in resolve
+    self._add_to_criteria(self.state.criteria, r, parent=None)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/resolvers.py", line 173, in _add_to_criteria
+    if not criterion.candidates:
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_vendor/resolvelib/structs.py", line 156, in __bool__
+    return bool(self._sequence)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 155, in __bool__
+    return any(self)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 143, in <genexpr>
+    return (c for c in iterator if id(c) not in self._incompatible_ids)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 47, in _iter_built
+    candidate = func()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/factory.py", line 182, in _make_candidate_from_link
+    base: Optional[BaseCandidate] = self._make_base_candidate_from_link(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/factory.py", line 228, in _make_base_candidate_from_link
+    self._link_candidate_cache[link] = LinkCandidate(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 290, in __init__
+    super().__init__(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 156, in __init__
+    self.dist = self._prepare()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 222, in _prepare
+    dist = self._prepare_distribution()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 301, in _prepare_distribution
+    return preparer.prepare_linked_requirement(self._ireq, parallel_builds=True)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 525, in prepare_linked_requirement
+    return self._prepare_linked_requirement(req, parallel_builds)
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 640, in _prepare_linked_requirement
+    dist = _get_prepared_distribution(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 71, in _get_prepared_distribution
+    abstract_dist.prepare_distribution_metadata(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/distributions/sdist.py", line 67, in prepare_distribution_metadata
+    self.req.prepare_metadata()
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/req/req_install.py", line 585, in prepare_metadata
+    self.metadata_directory = generate_metadata_legacy(
+  File "/home/ubuntu/pip-tools/automation/demo_myenv/lib/python3.10/site-packages/pip/_internal/operations/build/metadata_legacy.py", line 71, in generate_metadata
+    raise MetadataGenerationFailed(package_details=details) from error
+pip._internal.exceptions.MetadataGenerationFailed: metadata generation failed
+
+2025-05-03 16:41:13 - INFO - Verifying installed package versions
+2025-05-03 16:41:13 - INFO - Running command in virtual environment: pip3 list | grep -E 'cryptography'
+2025-05-03 16:41:14 - INFO - 
+Wrapper script completed successfully

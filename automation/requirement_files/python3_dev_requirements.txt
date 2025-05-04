@@ -84,7 +84,7 @@ flake8-docstrings==1.6.0
 flake8-isort==4.0.0
 flake8-quotes==3.3.2
 flake8-string-format==0.2.3
-Flask==0.12.2
+Flask==3.0.2
 flufl.enum==4.1.1
 ftfy==6.1.1
 funcsigs==1.0.2
@@ -105,13 +105,13 @@ isodate==0.6.0
 # Any change in isort version needs to be also reflected in
 # linters/py_lint/ArcanistIsortLinter.php ISORT_VERSION version variable
 isort==5.10.1
-itsdangerous==0.24
+itsdangerous==2.1.2
 itypes==1.1.0
 j2cli==0.3.10
 jdcal==1.4
 jenkins==1.0.2
 jenkinsapi==0.2.29
-Jinja2==2.10.3
+Jinja2==3.1.3
 jira==2.0.0
 jmespath==0.9.3
 jsonpatch==1.21
@@ -125,7 +125,7 @@ lazy-object-proxy==1.9.0
 leather==0.3.3
 lxml==4.9.3
 MarkdownTools==1.0.1
-MarkupSafe==2.0.1
+MarkupSafe==2.1.1
 matplotlib==3.9.0
 # Kindly check for conflicts with pylint if mccabe is changed
 mccabe==0.6.1
@@ -268,7 +268,7 @@ vapi-client-bindings==3.1.0
 vapi-common-client==2.12.0
 vcd-api-schemas-type==10.3.0.dev72
 websocket-client==0.48.0
-Werkzeug==0.15.5
+Werkzeug==3.0.0
 wget==3.2
 wrapt==1.13.3
 xlrd==1.1.0
