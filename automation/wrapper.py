@@ -34,7 +34,19 @@ for arg in sys.argv[1:]:
     elif arg.startswith("--"):
         logging.warning(f"Unknown flag: {arg}")
     else:
-        input_packages.append(arg)
+        # Split the argument by spaces to support multiple packages in a single argument
+        packages_in_arg = arg.split()
+        for pkg in packages_in_arg:
+            if '==' in pkg:  # Only add if it's a valid package spec
+                input_packages.append(pkg)
+            else:
+                logging.warning(f"Ignoring invalid package specification: {pkg}")
+
+if not input_packages:
+    error_msg = "Error: No valid package specifications found. Expected format: package==version."
+    logging.error(error_msg)
+    print(error_msg)
+    sys.exit(1)
 
 package_specs = ' '.join(input_packages)
 packages_to_update = [pkg.split('==')[0] for pkg in input_packages if '==' in pkg]

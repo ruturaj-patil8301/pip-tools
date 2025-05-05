@@ -7,7 +7,7 @@ import logging
 import re
 import json
 
-# Configure logging
+# Configure logging to write to a file with timestamp, level, and message
 logging.basicConfig(
     filename='resolve_dependencies.log',
     level=logging.INFO,
@@ -16,15 +16,44 @@ logging.basicConfig(
 )
 
 class PipPackage:
+    """
+    Class representing a Python package to be installed via pip.
+    
+    Attributes:
+        name (str): Name of the package
+        requirements_file (str, optional): Path to requirements file containing the package
+    """
     def __init__(self, name, requirements_file=None):
         self.name = name
         self.requirements_file = requirements_file
 
 class AptPackage:
+    """
+    Class representing a system package to be installed via apt.
+    
+    Attributes:
+        name (str): Name of the package
+    """
     def __init__(self, name):
         self.name = name
 
 def extract_packages(yaml_file_path):
+    """
+    Extract pip and apt packages from a YAML file.
+    
+    Args:
+        yaml_file_path (str): Path to the YAML file
+        
+    Returns:
+        tuple: (pip_packages, apt_packages) where each is a list of package objects
+        
+    Logs:
+        - ERROR: If YAML parsing fails
+        
+    Note:
+        - Handles both single package names and lists of package names
+        - Processes requirements files referenced in the YAML
+    """
     pip_packages = []
     apt_packages = []
     with open(yaml_file_path, 'r') as file:
@@ -66,6 +95,22 @@ def extract_packages(yaml_file_path):
     return pip_packages, apt_packages
 
 def read_requirements_file(requirements_file):
+    """
+    Read packages from a requirements file.
+    
+    Args:
+        requirements_file (str): Path to the requirements file
+        
+    Returns:
+        list: List of package specifications from the file
+        
+    Logs:
+        - ERROR: If file reading fails
+        - WARNING: If file is not found
+        
+    Note:
+        Returns only non-empty lines from the file
+    """
     if os.path.exists(requirements_file):
         try:
             with open(requirements_file, 'r') as file:
@@ -80,6 +125,19 @@ def read_requirements_file(requirements_file):
     return []
 
 def install_pip_packages(packages):
+    """
+    Install Python packages using pip.
+    
+    Args:
+        packages (list): List of PipPackage objects to install
+        
+    Logs:
+        - INFO: When installing a package
+        - ERROR: If installation fails
+        
+    Note:
+        Uses pip3 to install packages
+    """
     for pkg in packages:
         try:
             msg = f"Installing pip package: {pkg.name}"
@@ -92,6 +150,19 @@ def install_pip_packages(packages):
             print(msg)
 
 def install_apt_packages(packages):
+    """
+    Install system packages using apt-get.
+    
+    Args:
+        packages (list): List of AptPackage objects to install
+        
+    Logs:
+        - INFO: When updating apt cache and installing packages
+        - ERROR: If apt update or installation fails
+        
+    Note:
+        Updates apt cache before installing packages
+    """
     try:
         logging.info("Updating apt cache.")
         print("Updating apt cache...")
@@ -112,6 +183,27 @@ def install_apt_packages(packages):
         print(msg)
 
 def set_package_version(pkg_name, new_version, file_path):
+    """
+    Update the version of a package in a YAML or requirements file.
+    
+    Args:
+        pkg_name (str): Name of the package to update
+        new_version (str): New version to set
+        file_path (str): Path to the file to update
+        
+    Returns:
+        dict: Result of the operation with status and details
+        
+    Logs:
+        - INFO: When package is updated or already at desired version
+        - WARNING: When package is not found
+        - ERROR: When file is not found or an error occurs
+        
+    Note:
+        - Uses case-insensitive regex to match package names
+        - Handles different formats of package specifications in YAML files
+        - Preserves the original case of the package name
+    """
     try:
         if not Path(file_path).exists():
             msg = f"File not found: {file_path}"
@@ -202,6 +294,24 @@ def set_package_version(pkg_name, new_version, file_path):
         return {"status": "error", "message": msg, "package": pkg_name, "file": file_path}
 
 def main():
+    """
+    Main function to extract and install packages from YAML files or update package versions.
+    
+    Usage modes:
+    1. Extract and install: python script.py <file.yml>
+    2. Set package version: python script.py set <pkg_name> <new_version> <file_path>
+    
+    Returns:
+        None
+        
+    Exits:
+        - With code 0 if successful
+        - With code 1 if an error occurs
+        
+    Logs:
+        - ERROR: If arguments are invalid or required files are not found
+        - INFO: Package extraction and installation progress
+    """
     if len(sys.argv) == 5 and sys.argv[1] == 'set':
         pkg_name, new_version, file_path = sys.argv[2], sys.argv[3], sys.argv[4]
         if not Path(file_path).exists():

@@ -5,6 +5,7 @@ import ast
 import json
 from packaging.version import Version, InvalidVersion
 
+# Configure logging to write to a file with timestamp, level, and message
 logging.basicConfig(
     filename='resolve_dependencies.log',
     level=logging.INFO,
@@ -13,6 +14,19 @@ logging.basicConfig(
 )
 
 def run_command(cmd):
+    """
+    Execute a shell command and capture its output.
+    
+    Args:
+        cmd (str): Shell command to execute
+        
+    Returns:
+        str or None: Command output if successful, None if command fails
+        
+    Logs:
+        - DEBUG: Command output on success
+        - ERROR: Command error on failure
+    """
     try:
         output = subprocess.check_output(cmd, shell=True, text=True)
         logging.debug(f"Command succeeded '{cmd}': Output: {output.strip()}")
@@ -22,6 +36,18 @@ def run_command(cmd):
         return None
 
 def get_installed_version(package_name):
+    """
+    Get the installed version of a Python package.
+    
+    Args:
+        package_name (str): Name of the package to check
+        
+    Returns:
+        str or None: Version string if package is installed, None otherwise
+        
+    Note:
+        Uses pip3 show to get package information
+    """
     try:
         output = subprocess.check_output(["pip3", "show", package_name], text=True)
         for line in output.strip().splitlines():
@@ -31,6 +57,21 @@ def get_installed_version(package_name):
         return None
 
 def parse_dependency_issues(package):
+    """
+    Parse dependency issues for a package using dependency_resolver_final.py.
+    
+    Args:
+        package (str): Name of the package to analyze
+        
+    Returns:
+        list: List of dependency issues found
+        
+    Logs:
+        - ERROR: If parsing fails
+        
+    Note:
+        Expects dependency_resolver_final.py to output a list in string format
+    """
     cmd = f'python3 dependency_resolver_final.py "{package}"'
     output = run_command(cmd)
     if output:
@@ -43,6 +84,21 @@ def parse_dependency_issues(package):
     return []
 
 def parse_reverse_dependencies(package):
+    """
+    Parse reverse dependencies for a package using rev_dependency_resolver_final.py.
+    
+    Args:
+        package (str): Name of the package to analyze
+        
+    Returns:
+        list: List of reverse dependencies found
+        
+    Logs:
+        - ERROR: If parsing fails
+        
+    Note:
+        Expects rev_dependency_resolver_final.py to output a list in string format
+    """
     cmd = f'python3 rev_dependency_resolver_final.py "{package}"'
     output = run_command(cmd)
     if output:
@@ -55,10 +111,42 @@ def parse_reverse_dependencies(package):
     return []
 
 def get_trail_version(package, current_version):
+    """
+    Get a trail version for a package using get_version_for_rev_dependendencies.py.
+    
+    A trail version is a version between the current version and the latest version,
+    used to gradually upgrade packages with complex dependency relationships.
+    
+    Args:
+        package (str): Name of the package
+        current_version (str): Current version of the package
+        
+    Returns:
+        str or None: Trail version if found, None otherwise
+        
+    Note:
+        Uses get_version_for_rev_dependendencies.py with --trail flag
+    """
     cmd = f'python3 get_version_for_rev_dependendencies.py "{package}" "{current_version}" --trail'
     return run_command(cmd)
 
 def install_package(package_spec):
+    """
+    Install a Python package with a specific version.
+    
+    Args:
+        package_spec (str): Package specification (e.g., "package==1.0.0")
+        
+    Returns:
+        bool: True if installation succeeded, False otherwise
+        
+    Logs:
+        - INFO: Installation success
+        - ERROR: Installation failure
+        
+    Note:
+        Uses pip3 install with --no-deps to avoid dependency conflicts
+    """
     cmd = f'pip3 install "{package_spec}" --no-deps'
     if run_command(cmd) is not None:
         logging.info(f"Installed: {package_spec}")
@@ -68,6 +156,27 @@ def install_package(package_spec):
         return False
 
 def main(initial_packages):
+    """
+    Main function to resolve and update package dependencies.
+    
+    This function:
+    1. Iteratively resolves direct dependency issues
+    2. Resolves reverse dependency issues
+    3. Upgrades packages to resolve these issues
+    4. Tracks upgrade history
+    
+    Args:
+        initial_packages (list): List of package names to start with
+        
+    Returns:
+        dict: Upgrade history mapping package names to version changes
+        
+    Logs:
+        - INFO: Start and end of resolution process
+        - INFO: Iteration progress
+        - INFO: Package analysis and upgrades
+        - WARNING: Missing packages or versions
+    """
     upgrade_history = {}
     iteration = 0
     MAX_ITERATIONS = 10
@@ -157,6 +266,27 @@ def main(initial_packages):
     return upgrade_history
 
 if __name__ == "__main__":
+    """
+    Command-line interface for dependency resolution.
+    
+    Usage:
+        python update_dependency_rev_dependency.py '<package1>,<package2>,...'
+    
+    Args:
+        A comma-separated list of package names
+    
+    Outputs:
+        - Prints a summary of package upgrades
+        - Writes upgrade history to upgrade_history.json
+    
+    Exits:
+        - With code 1 if no valid packages are provided
+        - With code 1 if an unexpected error occurs
+    
+    Logs:
+        - ERROR: If arguments are invalid
+        - ERROR: If an unexpected error occurs
+    """
     if len(sys.argv) != 2:
         print(f"\nUsage: python3 {sys.argv[0]} '<package1>,<package2>,...'\n")
         sys.exit(1)

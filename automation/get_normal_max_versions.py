@@ -3,7 +3,7 @@ import sys
 import logging
 from packaging.version import Version
 
-# Logging explicitly to the file
+# Configure logging to write to a file with timestamp, level, and message
 logging.basicConfig(
     filename='resolve_dependencies.log',
     level=logging.INFO,
@@ -11,6 +11,19 @@ logging.basicConfig(
 )
 
 def load_config(config_file):
+    """
+    Load and parse a YAML configuration file.
+    
+    Args:
+        config_file (str): Path to the YAML configuration file
+        
+    Returns:
+        dict: Parsed configuration data, or None if an error occurs
+        
+    Logs:
+        - INFO: When loading configuration
+        - ERROR: If an exception occurs while loading the file
+    """
     logging.info(f"Loading configuration explicitly from: {config_file}")
     try:
         with open(config_file, 'r') as stream:
@@ -20,6 +33,22 @@ def load_config(config_file):
         return None
 
 def read_requirements(file_path):
+    """
+    Read a requirements file and extract package names and versions.
+    
+    Args:
+        file_path (str): Path to the requirements file
+        
+    Returns:
+        dict: Dictionary mapping package names to their versions
+        
+    Logs:
+        - INFO: When reading requirements
+        - ERROR: If file is not found or an error occurs while reading
+        
+    Note:
+        Only processes lines containing '==' to extract exact version requirements
+    """
     packages = {}
     try:
         with open(file_path, 'r') as fp:
@@ -36,6 +65,20 @@ def read_requirements(file_path):
     return packages
 
 def write_requirements(file_path, package_versions):
+    """
+    Write package versions to a requirements file.
+    
+    Args:
+        file_path (str): Path to the requirements file to write
+        package_versions (dict): Dictionary mapping package names to versions
+        
+    Logs:
+        - INFO: When writing updated requirements
+        - ERROR: If an error occurs while writing
+        
+    Note:
+        Overwrites the existing file with the new package versions
+    """
     try:
         with open(file_path, 'w') as fp:
             logging.info(f"Writing explicitly updated requirements to: {file_path}")
@@ -45,6 +88,23 @@ def write_requirements(file_path, package_versions):
         logging.error(f"Error writing requirements to '{file_path}': {e}")
 
 def get_package_version(file, package_name):
+    """
+    Get the version of a specific package from a requirements file.
+    
+    Args:
+        file (str): Path to the requirements file
+        package_name (str): Name of the package to find
+        
+    Returns:
+        str: Version of the package, or None if not found
+        
+    Logs:
+        - INFO: When package is found
+        - WARNING: When package is not found
+        
+    Note:
+        Performs case-insensitive matching on package names
+    """
     packages = read_requirements(file)
     package_name_lower = package_name.lower()
     packages_lower = {pkg.lower(): ver for pkg, ver in packages.items()}
@@ -57,6 +117,25 @@ def get_package_version(file, package_name):
     return version
 
 def get_max_version_across_files(files, package_name):
+    """
+    Find the maximum version of a package across multiple requirements files.
+    
+    Args:
+        files (list): List of paths to requirements files
+        package_name (str): Name of the package to find
+        
+    Returns:
+        list: [max_version, file_with_max_version] or [None, None] if not found
+        
+    Logs:
+        - INFO: When max version is found
+        - WARNING: When package is not found in any files
+        - ERROR: When version format is invalid
+        
+    Note:
+        - Performs case-insensitive matching on package names
+        - Uses packaging.version.Version for semantic version comparison
+    """
     package_name_lower = package_name.lower()
     max_version = None
     file_with_max_version = None
@@ -83,6 +162,27 @@ def get_max_version_across_files(files, package_name):
         return [None, None]
 
 def update_package_version_in_file(file, package_name, new_version):
+    """
+    Update the version of a specific package in a requirements file.
+    
+    Args:
+        file (str): Path to the requirements file
+        package_name (str): Name of the package to update
+        new_version (str): New version to set for the package
+        
+    Returns:
+        bool: True if update was successful, False otherwise
+        
+    Logs:
+        - INFO: When package is updated
+        - WARNING: When package is not found
+        - ERROR: When an error occurs during update
+        
+    Note:
+        - Performs case-insensitive matching on package names
+        - Preserves comments and formatting in the file
+        - Only updates lines that contain '==' and match the package name
+    """
     package_name_lower = package_name.lower()
     updated = False
 
@@ -113,7 +213,29 @@ def update_package_version_in_file(file, package_name, new_version):
         logging.error(f"Error while updating requirements file '{file}': {e}")
         return False
 
+# Main script execution
 if __name__ == "__main__":
+    """
+    Command-line interface for package version management.
+    
+    Usage:
+        python get_normal_max_versions.py get <package_name> <file>
+            - Get the version of a package from a specific file
+            
+        python get_normal_max_versions.py max <package_name>
+            - Get the maximum version of a package across all files in config
+            
+        python get_normal_max_versions.py set <package_name> <new_version> <file>
+            - Update the version of a package in a specific file
+            
+    Returns:
+        - For 'get': Prints the version if found, exits with code 1 if not found
+        - For 'max': Prints [max_version, file_path] if found, exits with code 1 if not found
+        - For 'set': Exits with code 0 if successful, code 1 if not successful
+        
+    Logs:
+        - ERROR: When incorrect usage or configuration loading fails
+    """
     if len(sys.argv) < 2:
         logging.error("No action provided. Exiting explicitly.")
         sys.exit(1)

@@ -13,6 +13,23 @@ logging.basicConfig(
 )
 
 def run_pipdeptree(package_name):
+    """
+    Run pipdeptree to get dependency information for a package in JSON format.
+    
+    Args:
+        package_name (str): Name of the package to analyze
+        
+    Returns:
+        list: JSON data from pipdeptree output
+        
+    Logs:
+        - ERROR: If pipdeptree command fails
+        
+    Note:
+        - Uses pipdeptree with --json flag
+        - Redirects stderr to /dev/null to suppress warnings
+        - Returns empty list if command fails
+    """
     cmd = f'pipdeptree -p "{package_name}" --json 2>/dev/null'
     try:
         output = subprocess.check_output(cmd, shell=True, text=True)
@@ -22,6 +39,20 @@ def run_pipdeptree(package_name):
         return []
 
 def get_package_info(data, package_name):
+    """
+    Extract package information from pipdeptree JSON data.
+    
+    Args:
+        data (list): JSON data from pipdeptree
+        package_name (str): Name of the package to find
+        
+    Returns:
+        dict or None: Package entry if found, None otherwise
+        
+    Note:
+        - Case-insensitive package name matching
+        - Returns the first matching package entry
+    """
     for entry in data:
         pkg_key = entry.get("package", {}).get("key", "").lower()
         if pkg_key == package_name.lower():
@@ -29,6 +60,23 @@ def get_package_info(data, package_name):
     return None
 
 def get_available_versions(package_name):
+    """
+    Get available versions of a package from PyPI.
+    
+    Args:
+        package_name (str): Name of the package to query
+        
+    Returns:
+        list: Sorted list of version strings (ascending order)
+        
+    Logs:
+        - ERROR: If pip command fails
+        
+    Note:
+        - Uses pip3 index versions command
+        - Parses the output to extract version numbers
+        - Sorts versions using packaging.version.Version
+    """
     try:
         output = subprocess.check_output(["pip3", "index", "versions", package_name], text=True, stderr=subprocess.DEVNULL)
         versions = []
@@ -43,6 +91,25 @@ def get_available_versions(package_name):
         return []
 
 def find_lowest_valid_version(package_name, version_specifier):
+    """
+    Find the lowest version of a package that satisfies a version specifier.
+    
+    Args:
+        package_name (str): Name of the package
+        version_specifier (str): Version specifier (e.g., ">=1.0.0,<2.0.0")
+        
+    Returns:
+        str or None: Lowest valid version if found, None otherwise
+        
+    Logs:
+        - INFO: When a valid version is found
+        - WARNING: When no valid version is found
+        
+    Note:
+        - Queries PyPI for available versions
+        - Tests each version against the specifier
+        - Returns the first (lowest) version that satisfies the specifier
+    """
     versions = get_available_versions(package_name)
     spec_set = SpecifierSet(version_specifier)
 
@@ -57,6 +124,22 @@ def find_lowest_valid_version(package_name, version_specifier):
     return None
 
 def get_max_requirement_version(package_name):
+    """
+    Get the maximum version of a package from requirement files.
+    
+    Args:
+        package_name (str): Name of the package
+        
+    Returns:
+        tuple: (max_version, requirement_file) or (None, None) if not found
+        
+    Logs:
+        - ERROR: If an error occurs during execution
+        
+    Note:
+        - Uses get_normal_max_versions.py script
+        - Returns both the version and the file it was found in
+    """
     try:
         result = subprocess.check_output(["python3", "get_normal_max_versions.py", "max", package_name], text=True)
         result = result.strip()
@@ -68,6 +151,34 @@ def get_max_requirement_version(package_name):
     return None, None
 
 def main(package_name):
+    """
+    Resolve dependency issues for a package.
+    
+    This function:
+    1. Gets dependency information for the package
+    2. Checks each dependency against its installed version
+    3. Finds valid versions for dependencies with version conflicts
+    4. Returns a list of dependencies that need to be updated
+    
+    Args:
+        package_name (str): Name of the package to analyze
+        
+    Returns:
+        None: Results are printed to stdout as JSON
+        
+    Exits:
+        - With code 1 if package info is not found
+        
+    Logs:
+        - INFO: When starting resolution
+        - ERROR: If package info is not found
+        - INFO: When dependency issues are found
+        - ERROR: When processing errors occur
+        
+    Note:
+        - Outputs a JSON array of package specifications (e.g., ["pkg1==1.0.0", "pkg2==2.0.0"])
+        - Empty array means no dependency issues
+    """
     logging.info(f"[dependency_resolver_final.py] Resolving explicitly dependencies for '{package_name}'")
 
     data = run_pipdeptree(package_name)
@@ -137,6 +248,26 @@ def main(package_name):
     print(json.dumps(dependency_issues))
 
 if __name__ == "__main__":
+    """
+    Command-line interface for dependency resolution.
+    
+    Usage:
+        python dependency_resolver_final.py <package_name>
+    
+    Args:
+        package_name: Name of the package to analyze
+    
+    Outputs:
+        - Prints a JSON array of package specifications to stdout
+    
+    Exits:
+        - With code 1 if arguments are missing or invalid
+        - With code 1 if an unexpected error occurs
+    
+    Logs:
+        - ERROR: If arguments are missing or invalid
+        - ERROR: If an unexpected error occurs
+    """
     if len(sys.argv) != 2:
         logging.error("Incorrect usage clearly: python3 dependency_resolver_final.py <package_name> explicitly required.")
         print("[]")

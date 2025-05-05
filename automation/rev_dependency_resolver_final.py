@@ -14,7 +14,22 @@ logging.basicConfig(
 )
 
 def get_installed_package_version(package_name):
-    """Get installed version of the specified package explicitly."""
+    """
+    Get installed version of the specified package.
+    
+    Args:
+        package_name (str): Name of the package to check
+        
+    Returns:
+        str or None: Version string if package is installed, None otherwise
+        
+    Logs:
+        - ERROR: If pip command fails
+        
+    Note:
+        - Uses pip3 show command to get package information
+        - Parses the output to extract the version number
+    """
     try:
         output = subprocess.check_output(["pip3", "show", package_name], text=True)
         for line in output.strip().splitlines():
@@ -26,7 +41,24 @@ def get_installed_package_version(package_name):
         return None
 
 def requirement_is_satisfied(requirement_str, current_version):
-    """Check clearly if version requirement is satisfied explicitly."""
+    """
+    Check if a version requirement is satisfied by the current version.
+    
+    Args:
+        requirement_str (str): Requirement string (e.g., "package>=1.0.0")
+        current_version (str): Current version to check against
+        
+    Returns:
+        bool or None: True if satisfied, False if not, None if parsing error
+        
+    Logs:
+        - ERROR: If parsing the requirement or version fails
+        
+    Note:
+        - Uses packaging.requirements.Requirement to parse requirements
+        - Uses packaging.version.Version to parse versions
+        - Returns None if any parsing error occurs
+    """
     try:
         req = Requirement(requirement_str)
         installed_version = Version(current_version)
@@ -36,6 +68,21 @@ def requirement_is_satisfied(requirement_str, current_version):
         return None
 
 def main(package_name):
+    """
+    Find reverse dependencies with unsatisfied version requirements.
+    
+    This function:
+    1. Gets the installed version of the package
+    2. Finds all packages that depend on this package
+    3. Checks if each dependency's requirements are satisfied
+    4. Returns a list of packages with unsatisfied requirements
+    
+    Args:
+        package_name (str): Name of the package to analyze
+        
+    Returns:
+        None: Results are printed
+    """
     current_version = get_installed_package_version(package_name)
     if current_version is None:
         logging.error(f"Package '{package_name}' not found explicitly installed via pip.")

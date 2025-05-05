@@ -12,7 +12,28 @@ logging.basicConfig(
 )
 
 def get_available_versions(package_name):
-    """Fetch available versions from PyPI using pip3 explicitly (without lambda)."""
+    """
+    Fetch available versions from PyPI using pip3 explicitly.
+    
+    This function queries PyPI for all available versions of a package,
+    validates each version, and returns them in sorted order.
+    
+    Args:
+        package_name (str): Name of the package to query
+        
+    Returns:
+        list: Sorted list of valid version strings (ascending order)
+        
+    Logs:
+        - ERROR: If pip command fails
+        - ERROR: If an invalid version is encountered
+        - ERROR: If any unexpected error occurs
+        
+    Note:
+        - Uses pip3 index versions command
+        - Filters out invalid versions
+        - Returns an empty list if any error occurs
+    """
     try:
         output = subprocess.check_output(
             ["pip3", "index", "versions", package_name],
@@ -30,7 +51,7 @@ def get_available_versions(package_name):
                         Version(ver_clean)  # explicit valid version check
                         versions.append(ver_clean)
                     except InvalidVersion as e:
-                        logging.error(f"Invalid version '{ver}' skipped for '{package_name}': {e}")
+                        logging.error(f"Invalid version '{ver_clean}' skipped for '{package_name}': {e}")
                 break
         versions.sort(key=Version)
         return versions
@@ -42,6 +63,40 @@ def get_available_versions(package_name):
         return []
 
 def main(package_name, input_version, flags):
+    """
+    Find versions of a package greater than the input version and output
+    specific versions based on provided flags.
+    
+    This function:
+    1. Gets all available versions for the package
+    2. Filters versions greater than the input version
+    3. Calculates first, latest, and trail versions
+    4. Outputs requested versions based on flags
+    
+    Args:
+        package_name (str): Name of the package to analyze
+        input_version (str): Version to compare against
+        flags (list): List of flags determining which versions to output
+                     (--first, --latest, --trail)
+        
+    Returns:
+        None: Results are printed to stdout
+        
+    Exits:
+        - With code 1 if no versions are found
+        - With code 1 if input version is invalid
+        - With code 0 if no higher versions are found
+        
+    Logs:
+        - INFO: When checking versions
+        - ERROR: If no versions are found
+        - ERROR: If input version is invalid
+        - INFO: When outputting specific versions
+        
+    Note:
+        - Trail version is calculated as the middle point between first and latest
+        - Only outputs versions requested by flags
+    """
     logging.info(f"Checking available versions for '{package_name}' greater than '{input_version}'")
 
     versions = get_available_versions(package_name)
@@ -82,6 +137,28 @@ def main(package_name, input_version, flags):
         print(trail_version)
 
 if __name__ == "__main__":
+    """
+    Command-line interface for finding package versions.
+    
+    Usage:
+        python get_version_for_rev_dependendencies.py <package_name> <input_version> [--first] [--latest] [--trail]
+    
+    Args:
+        package_name: Name of the package to analyze
+        input_version: Version to compare against
+        flags: One or more of --first, --latest, --trail
+    
+    Outputs:
+        - Prints requested versions to stdout (one per line)
+    
+    Exits:
+        - With code 1 if arguments are missing or invalid
+        - With code 1 if an unexpected error occurs
+    
+    Logs:
+        - ERROR: If arguments are missing or invalid
+        - ERROR: If an unexpected error occurs
+    """
     if len(sys.argv) < 4:
         logging.error(f"Incorrect usage. Provided arguments: {sys.argv}")
         print(f"Usage: python3 {sys.argv[0]} <package_name> <input_version> [--first] [--latest] [--trail]")
